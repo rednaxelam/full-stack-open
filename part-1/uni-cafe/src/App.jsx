@@ -25,6 +25,7 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const all = good + neutral + bad;
   return (
     <div>
       <HTag textContent={'give feedback'} level={1} />
@@ -38,6 +39,9 @@ const App = () => {
       <Result valueLabel={'good'} value={good} />
       <Result valueLabel={'neutral'} value={neutral} />
       <Result valueLabel={'bad'} value={bad} />
+      <Result valueLabel={'all'} value={all} />
+      <Result valueLabel={'average'} value={(all === 0) ? 'NA' : (good - bad) / all} />
+      <Result valueLabel={'positive'} value={(all === 0) ? 'NA' :`${100 * (good / all)}%`} />
 
       <Result />
     </div>
