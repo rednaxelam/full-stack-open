@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createElement } from 'react';
 
 const Button = ({textContent, handleClick}) => {
   return (
@@ -8,7 +9,18 @@ const Button = ({textContent, handleClick}) => {
   )
 }
 
+const HTag = ({textContent, level}) => {
+  return createElement(`h${level}`, null, `${textContent}`);
+}
 
+const Anecdote = ({anecdote, numVotes}) => {
+  return (
+    <>
+      <p>{anecdote}</p>
+      <p>has {numVotes} votes</p>
+    </>
+  )
+}
 
 const App = () => {
   const anecdotes = [
@@ -26,19 +38,28 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [anecdotesVotes, setAnecdotesVotes] = useState(Array(anecdotes.length).fill(0));
+  const [anecdoteWithMostVotes, setAnecdoteWithMostVotes] = useState(0);
 
   const voteForAnecdote = () => {
     const newAnecdotesVotes =  [...anecdotesVotes];
     newAnecdotesVotes[selected]++;
+    if (newAnecdotesVotes[anecdoteWithMostVotes] < newAnecdotesVotes[selected]) setAnecdoteWithMostVotes(selected);
     setAnecdotesVotes(newAnecdotesVotes);
   }
 
+  
+
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <p>has {anecdotesVotes[selected]} votes</p>
+      <HTag textContent={'Anecdote of the day'} level={1}/>
+
+      <Anecdote anecdote={anecdotes[selected]} numVotes={anecdotesVotes[selected]} />
       <Button textContent={'vote'} handleClick={() => voteForAnecdote(selected)} />
       <Button textContent={'next anecdote'} handleClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} />
+
+      <HTag textContent={'Anecdote with most votes'} level={2}/>
+
+      <Anecdote anecdote={anecdotes[anecdoteWithMostVotes]} numVotes={anecdotesVotes[anecdoteWithMostVotes]} />
     </div>
   )
 }
