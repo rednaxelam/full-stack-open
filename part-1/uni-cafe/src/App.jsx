@@ -20,12 +20,25 @@ const Result = ({valueLabel, value}) => {
   )
 }
 
+const Statistics = ({good, neutral, bad}) => {
+  const all = good + neutral + bad;
+  return (
+    <div>
+      <Result valueLabel={'good'} value={good} />
+      <Result valueLabel={'neutral'} value={neutral} />
+      <Result valueLabel={'bad'} value={bad} />
+      <Result valueLabel={'all'} value={all} />
+      <Result valueLabel={'average'} value={(all === 0) ? 'NA' : (good - bad) / all} />
+      <Result valueLabel={'positive'} value={(all === 0) ? 'NA' :`${100 * (good / all)}%`} />
+    </div>
+  )
+}
+
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const all = good + neutral + bad;
   return (
     <div>
       <HTag textContent={'give feedback'} level={1} />
@@ -36,12 +49,7 @@ const App = () => {
       
       <HTag textContent={'statistics'} level={2} />
 
-      <Result valueLabel={'good'} value={good} />
-      <Result valueLabel={'neutral'} value={neutral} />
-      <Result valueLabel={'bad'} value={bad} />
-      <Result valueLabel={'all'} value={all} />
-      <Result valueLabel={'average'} value={(all === 0) ? 'NA' : (good - bad) / all} />
-      <Result valueLabel={'positive'} value={(all === 0) ? 'NA' :`${100 * (good / all)}%`} />
+      <Statistics good={good} neutral={neutral} bad={bad}/>
 
       <Result />
     </div>
