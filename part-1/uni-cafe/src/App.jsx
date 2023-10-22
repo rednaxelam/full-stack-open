@@ -22,16 +22,25 @@ const Result = ({valueLabel, value}) => {
 
 const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad;
-  return (
-    <div>
-      <Result valueLabel={'good'} value={good} />
-      <Result valueLabel={'neutral'} value={neutral} />
-      <Result valueLabel={'bad'} value={bad} />
-      <Result valueLabel={'all'} value={all} />
-      <Result valueLabel={'average'} value={(all === 0) ? 'NA' : (good - bad) / all} />
-      <Result valueLabel={'positive'} value={(all === 0) ? 'NA' :`${100 * (good / all)}%`} />
-    </div>
-  )
+  if (all === 0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <Result valueLabel={'good'} value={good} />
+        <Result valueLabel={'neutral'} value={neutral} />
+        <Result valueLabel={'bad'} value={bad} />
+        <Result valueLabel={'all'} value={all} />
+        <Result valueLabel={'average'} value={(good - bad) / all} />
+        <Result valueLabel={'positive'} value={`${100 * (good / all)}%`} />
+      </div>
+    )
+  }
+  
 }
 
 const App = () => {
