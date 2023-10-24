@@ -30,7 +30,7 @@ const Total = (props) => {
 
   return (
     <p>
-      Number of exercises {totalExercises}
+      total of {totalExercises} exercises
     </p>
   )
 }
@@ -40,6 +40,7 @@ const Course = ({course}) => {
     <div>
       <HTag textContent={course.name} level={2} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }
