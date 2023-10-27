@@ -15,8 +15,17 @@ const App = () => {
 
   const addContact = (e) => {
     e.preventDefault();
-    let ID = nextID;
+
     const contactName = newName;
+    
+    if (contactName.trim().length === 0) return;
+    if (persons.findIndex(contact => contactName === contact.name) !== -1) {
+      alert(`${contactName} is already in the phonebook`);
+      return;
+    };
+    
+    let ID = nextID;
+    console.log(persons.concat({ name: contactName, id: ID}));
     setPersons(persons.concat({ name: contactName, id: ID}));
     setNewName('');
     setNextID(ID + 1);
