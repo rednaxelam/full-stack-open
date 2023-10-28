@@ -1,22 +1,19 @@
-import { useState } from 'react'
-import ContactList from './components/ContactList'
+import { useState } from 'react';
+import ContactList from './components/ContactList';
 import HTag from './components/HTag';
+import TextualInputDefault from './components/TextualInputDefault';
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '040-1234567', id: 0 }
-  ]) 
-  const [newName, setNewName] = useState('')
-  const [newPhone, setNewPhone] = useState('')
-  let [nextID, setNextID] = useState(1);
-
-  const handleTextualInputDefault = (setter) => {
-    return e => setter(e.target.value);
-  }
-
-  const handleNewNameInput = handleTextualInputDefault(setNewName);
-
-  const handleNewPhoneInput = handleTextualInputDefault(setNewPhone);
+    { name: 'Arto Hellas', phone: '040-123456', id: 0 },
+    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 1 },
+    { name: 'Dan Abramov', phone: '12-43-234345', id: 2 },
+    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 3 }
+  ]); 
+  const [newName, setNewName] = useState('');
+  const [newPhone, setNewPhone] = useState('');
+  const [newSearch, setNewSearch] = useState('');
+  let [nextID, setNextID] = useState(4);
 
   const addContact = (e) => {
     e.preventDefault();
@@ -38,23 +35,22 @@ const App = () => {
     setNewName('');
     setNewPhone('');
     setNextID(ID + 1);
-    console.log(persons.concat({ name: contactName, phone: contactPhone, id: ID}));
   }
+
+  const displayedContacts = persons.filter(person => person.name.toUpperCase().includes(newSearch.toUpperCase()));
 
   return (
     <div>
       <HTag textContent={'Phonebook'} level={2}/>
+      <TextualInputDefault label={'filter shown with'} type={'text'} nameID={'filter'} state={newSearch} setter={setNewSearch}/>
+      <HTag textContent={'add a new'} level={2} />
       <form id='form-add-contact' onSubmit={addContact}>
-        <label htmlFor="name">name:</label>
-        <input type='text' name='name' id='name' value={newName} onInput={handleNewNameInput}/>
-        <br />
-        <label htmlFor="phone">phone:</label>
-        <input type='tel' name='phone' id='phone' value={newPhone} onInput={handleNewPhoneInput}/>
-        <br />
+        <TextualInputDefault label={'name'} type={'text'} nameID={'name'} state={newName} setter={setNewName}/>
+        <TextualInputDefault label={'phone'} type={'tel'} nameID={'phone'} state={newPhone} setter={setNewPhone}/>
         <button type="submit" >add</button>
       </form>
       <HTag textContent={'Numbers'} level={2}/>
-      <ContactList persons={persons}/>
+      <ContactList persons={displayedContacts}/>
     </div>
   )
 }
