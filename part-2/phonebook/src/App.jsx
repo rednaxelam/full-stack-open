@@ -3,13 +3,13 @@ import axios from 'axios'
 import ContactList from './components/ContactList';
 import HTag from './components/HTag';
 import TextualInputDefault from './components/TextualInputDefault';
+import personsService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]); 
   const [newName, setNewName] = useState('');
   const [newPhone, setNewPhone] = useState('');
   const [newSearch, setNewSearch] = useState('');
-  let [nextID, setNextID] = useState(4);
 
   useEffect(() => {
     axios
@@ -32,11 +32,13 @@ const App = () => {
     
     if (contactPhone.trim().length === 0) return;
 
-    let ID = nextID;
-    setPersons(persons.concat({ name: contactName, phone: contactPhone, id: ID}));
-    setNewName('');
-    setNewPhone('');
-    setNextID(ID + 1);
+    personsService
+      .createContact({ name: contactName, number: contactPhone})
+      .then(newContact => {
+        setPersons(persons.concat(newContact));
+        setNewName('');
+        setNewPhone('');
+    })
   }
 
   const displayedContacts = persons.filter(person => person.name.toUpperCase().includes(newSearch.toUpperCase()));
