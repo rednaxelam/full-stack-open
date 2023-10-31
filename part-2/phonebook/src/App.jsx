@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios'
 import ContactList from './components/ContactList';
 import HTag from './components/HTag';
 import TextualInputDefault from './components/TextualInputDefault';
@@ -12,9 +11,9 @@ const App = () => {
   const [newSearch, setNewSearch] = useState('');
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data));
+    personsService
+    .getAll()
+    .then(contacts => setPersons(contacts))
   }, [])
 
   const addContact = (e) => {
