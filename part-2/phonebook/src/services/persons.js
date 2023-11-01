@@ -10,9 +10,14 @@ const getAll = () => {
 }
 
 const deleteContact = contact => {
-  if (window.confirm(`delete ${contact.name}?`)) {
-    axios.delete(`${baseURL}/${contact.id}`);
-  }
+  axios.delete(`${baseURL}/${contact.id}`);
+  return;
 }
 
-export default {createContact, getAll, deleteContact};
+const amendContactNumber = (contact, newNumber) => {
+  const newContact = {...contact, number: newNumber};
+  return axios.put(`${baseURL}/${contact.id}`, newContact).then(response => response.data);
+
+}
+
+export default {createContact, getAll, deleteContact, amendContactNumber};

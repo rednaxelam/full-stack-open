@@ -20,16 +20,35 @@ const App = () => {
     e.preventDefault();
 
     const contactName = newName;
-    
-    if (contactName.trim().length === 0) return;
-    if (persons.findIndex(contact => contactName === contact.name) !== -1) {
-      alert(`${contactName} is already in the phonebook`);
-      return;
-    };
-
     const contactPhone = newPhone;
     
+    if (contactName.trim().length === 0) return;
     if (contactPhone.trim().length === 0) return;
+
+    let contactIndex = persons.findIndex(contact => contactName === contact.name);
+    if (contactIndex !== -1) {
+      if (persons[contactIndex].number === newPhone) {
+        alert(`${contactName} is already in the phonebook`);
+        return;
+      }
+      else {
+        const confirmText = `${contactName} is already in the phonebook. Would you like to replace their old number with their new one?`;
+        if (window.confirm(confirmText)) {
+          personsService
+            .amendContactNumber(persons[contactIndex], newPhone)
+            .then(updatedContact => {
+              const newPersonsArray = persons.map(person => (person.id === updatedContact.id) ? updatedContact : person);
+              setPersons(newPersonsArray);
+              setNewName('');
+              setNewPhone('');
+            });
+          return;
+        }
+        setNewName('');
+        setNewPhone('');
+        return;
+      }
+    };
 
     personsService
       .createContact({ name: contactName, number: contactPhone})

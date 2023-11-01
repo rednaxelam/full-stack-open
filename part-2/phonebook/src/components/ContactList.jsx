@@ -3,9 +3,11 @@ import personsService from '../services/persons'
 const ContactList = ({persons, setPersons}) => {
   
   const deleteContact = (person) => {
-    personsService.deleteContact(person);
-    const newPersonsArray = persons.filter(contact => contact.id !== person.id);
-    setPersons(newPersonsArray);
+    if (window.confirm(`delete ${person.name}?`)) {
+      personsService.deleteContact(person);
+      const newPersonsArray = persons.filter(contact => contact.id !== person.id);
+      setPersons(newPersonsArray);
+    }
   }
 
   return (
