@@ -53,7 +53,7 @@ const App = () => {
         <button type="submit" >add</button>
       </form>
       <HTag textContent={'Numbers'} level={2}/>
-      <ContactList persons={displayedContacts}/>
+      <ContactList persons={displayedContacts} setPersons={setPersons}/>
     </div>
   )
 }

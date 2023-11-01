@@ -9,4 +9,10 @@ const getAll = () => {
   return axios.get(baseURL).then(response => response.data);
 }
 
-export default {createContact, getAll};
+const deleteContact = contact => {
+  if (window.confirm(`delete ${contact.name}?`)) {
+    axios.delete(`${baseURL}/${contact.id}`);
+  }
+}
+
+export default {createContact, getAll, deleteContact};
