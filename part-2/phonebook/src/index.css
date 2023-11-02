@@ -1,7 +1,18 @@
-.success-message {
+.success-message, .error-message {
   font-size: 16px;
-  background-color: lightblue;
   margin: 1rem;
-  border: 3px solid green;
+  border: 3px solid;
   padding: 1rem;
+}
+
+.success-message {
+  background-color: gray;
+  color: lightgreen;
+  border-color: lightgreen;
+}
+
+.error-message {
+  background-color: gray;
+  color: red;
+  border-color: red;
 }
