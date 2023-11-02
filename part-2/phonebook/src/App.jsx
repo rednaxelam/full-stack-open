@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ContactList from './components/ContactList';
 import HTag from './components/HTag';
 import TextualInputDefault from './components/TextualInputDefault';
+import SuccessMessage from './components/SuccessMessage';
 import personsService from './services/persons';
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newPhone, setNewPhone] = useState('');
   const [newSearch, setNewSearch] = useState('');
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     personsService
@@ -41,12 +43,15 @@ const App = () => {
               setPersons(newPersonsArray);
               setNewName('');
               setNewPhone('');
+              setSuccessMessage(`${updatedContact.name}'s number has been updated`);
+              setTimeout(() => setSuccessMessage(null), 3000);
             });
           return;
+        } else {
+          setNewName('');
+          setNewPhone('');
+          return;
         }
-        setNewName('');
-        setNewPhone('');
-        return;
       }
     };
 
@@ -56,6 +61,8 @@ const App = () => {
         setPersons(persons.concat(newContact));
         setNewName('');
         setNewPhone('');
+        setSuccessMessage(`${contactName} has been added to the phonebook`);
+        setTimeout(() => setSuccessMessage(null), 3000);
     })
   }
 
@@ -64,6 +71,7 @@ const App = () => {
   return (
     <div>
       <HTag textContent={'Phonebook'} level={2}/>
+      <SuccessMessage textContent={successMessage}/>
       <TextualInputDefault label={'filter shown with'} type={'text'} nameID={'filter'} state={newSearch} setter={setNewSearch}/>
       <HTag textContent={'add a new'} level={2} />
       <form id='form-add-contact' onSubmit={addContact}>
