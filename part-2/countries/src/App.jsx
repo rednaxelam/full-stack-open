@@ -18,7 +18,7 @@ function App() {
   return (
     <>
       <TextualInputDefault label={'find countries'} type={'search'} nameID={'country'} state={country} setter={setCountry}/>
-      <DisplaySearchResults countryArray={countryArray}/>
+      <DisplaySearchResults key={country} countryArray={countryArray}/>
     </>
   )
 }
