@@ -1,7 +1,19 @@
 import HTag from './HTag';
-import {useState} from 'react';
+import { useEffect, useState } from 'react';
+import weatherService from '../services/weatherService';
+
+const convertToCelsius = tempK => (tempK - 273.15).toFixed(2);
 
 const DisplayCountryInfo = ({countryInfo}) => {
+
+  const [weatherInfo, setWeatherInfo] = useState(null);
+
+  useEffect(() => {
+    weatherService
+      .getWeather(countryInfo.capitalInfo.latlng[0], countryInfo.capitalInfo.latlng[1])
+      .then(weather => setWeatherInfo(weather));
+  }, [])
+
   return (
     <div className="country-info">
       <HTag textContent={countryInfo.name.common} level={2}/>
@@ -14,6 +26,12 @@ const DisplayCountryInfo = ({countryInfo}) => {
         {Object.values(countryInfo.languages).map(language => <li key={language}>{language}</li>)}
       </ul>
       <img src={countryInfo.flags.png} alt={countryInfo.flags.alt} />
+      <HTag textContent={`Weather in ${countryInfo.capital}`} level={2}/>
+      {weatherInfo === null 
+        ? <></> 
+        : <><p>temperature {convertToCelsius(weatherInfo.main.temp)} Celsius</p>
+      <img src={`https://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png`} alt={`${weatherInfo.weather.description}`} />
+      <p>wind {weatherInfo.wind.speed} m/s</p></>}
     </div>
   )
 }
